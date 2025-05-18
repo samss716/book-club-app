@@ -1,20 +1,48 @@
 export default function User() {
     return (
-      <div className="relative flex flex-col items-center justify-center text-center overflow-hidden px-4">
-        <h1 className="text-2xl">User Profile</h1>
 
-        <div className="fixed bottom-25 w-full flex justify-center z-40">
-        <div className="flex flex-col gap-4 w-4/5"> {/*wrapper to stack pill buttons*/}
-        <button class="flex-1 bg-[#91af9b] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+      <div className="flex flex-col items-center justify-between text-center h-[calc(100vh-6rem)] overflow-hidden pt-6 pb-4">
+        
+      <div className="flex flex-col items-center space-y-2">
+      <h1 className="text-2xl">User Profile</h1>
+
+
+      <div className="w-32 h-32 rounded-full bg-gray-300 flex items-center justify-center text-white text-2xl">
+        {/* avatar image */}
+        <span>👤</span>
+      </div>
+
+      <h2 className="text-xl font-semibold">User Profile</h2>
+      <p className="text-sm text-gray-600">Tap to upload a new photo</p>
+      </div>
+
+        {/*user option buttons */}
+        <div className="flex flex-col gap-3 w-3/5"> {/*wrapper to stack pill buttons*/}
+        <button class="bg-[#91af9b] hover:bg-[#446850] text-white font-bold py-8 px-4 rounded-full">
+        Reading Archive
+        </button>
+
+        <button class="bg-[#91af9b] hover:bg-[#446850] text-white font-bold py-8 px-4 rounded-full">
+        Friends
+        </button>
+
+        <button class="bg-[#91af9b] hover:bg-[#446850] text-white font-bold py-8 px-4 rounded-full">
+        Manage Groups
+        </button>
+
+        </div>
+
+        
+        <div className="flex flex-col gap-2 w-4/5"> {/*wrapper to stack pill buttons*/}
+        <button class="bg-gray-300 hover:bg-[#446850] text-white font-bold py-2 px-4 rounded-full">
         Edit Profile
         </button>
 
-        <button class="flex-1 bg-[#91af9b] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+        <button class="bg-gray-300 hover:bg-[#446850] text-white font-bold py-2 px-4 rounded-full">
         Sign Out
         </button>
 
         </div>
         </div>
-      </div>
     );
   }
