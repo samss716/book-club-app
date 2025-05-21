@@ -7,9 +7,8 @@ import User from './pages/User.jsx';
 import Homepage from './pages/Homepage.jsx';
 import Group from './pages/Group.jsx';
 import Information from './pages/Information.jsx';
-import Profile from './pages/Favorites.jsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Favorites from './pages/Favorites.jsx'
+import Discover from './pages/Discover.jsx'
 
 
 const router = createBrowserRouter([
@@ -17,7 +16,7 @@ const router = createBrowserRouter([
   children: [
   {path: '', element:<Homepage/>},
   {path: 'group', element:<Group/>},
-  {path: 'favorites', element: <Favorites/>},
+  {path: 'discover', element: <Discover/>},
   {path: 'info', element:<Information/>},
   {path: 'create', element:<CreateGroup/>},
   { path: '/user', element:<User/>}

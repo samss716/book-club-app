@@ -19,7 +19,7 @@ export default function User() {
       {/*user option buttons */}
       <div className="flex flex-col gap-3 w-3/5"> {/*wrapper to stack pill buttons*/}
       <button class="bg-[#91af9b] hover:bg-[#446850] text-white font-bold py-8 px-4 rounded-full">
-      Reading Archive
+      Reading Archive/Bookshelf
       </button>
 
       <button class="bg-[#91af9b] hover:bg-[#446850] text-white font-bold py-8 px-4 rounded-full">
