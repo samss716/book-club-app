@@ -12,24 +12,22 @@ export default function Homepage() {
         <p className="mt-2">Start a new group or join an existing one.</p>
 
       <div className="atom-container">
-      <div className="atom-nucleus">
+      <div className="atom-nucleus"></div>
 
-        
-      </div>
 
+<div className="atom-orbit">
 {groupMems.map((icon, index) => {
   const angle = (360 / groupMems.length) * index;
   return (
     <div
-      className="atom-orbit"
       key={index}
+      className="electron"
       style={{
-        transform: `rotate(${angle}deg)`,
+        transform: `rotate(${angle}deg) translateX(190px) rotate(-${angle}deg)`,
       }}
     >
-      <div className="electron">{icon}</div>
+      {icon}
     </div>
-    
   );
 })}
 </div>
