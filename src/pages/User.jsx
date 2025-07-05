@@ -1,4 +1,4 @@
-import { Outlet, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function User() {
   return (
@@ -18,33 +18,42 @@ export default function User() {
     <p className="text-sm text-gray-600">Tap to upload a new photo</p>
     </div>
 
-      {/*user option buttons */}
+      {/*user option buttons from routing */}
       <div className="flex flex-col gap-3 w-3/5"> {/*wrapper to stack pill buttons*/}
-      <button class="bg-[#91af9b] hover:bg-[#446850] text-white font-bold py-8 px-4 rounded-full">
+      <Link
+        to="/bookshelf"
+        className="bg-[#91af9b] hover:bg-[#446850] text-white font-bold py-8 px-4 rounded-full">
       Reading Archive/Bookshelf
-      </button>
+      </Link>
 
-      <button class="bg-[#91af9b] hover:bg-[#446850] text-white font-bold py-8 px-4 rounded-full">
+      <Link
+        to="/friends"
+        className="bg-[#91af9b] hover:bg-[#446850] text-white font-bold py-8 px-4 rounded-full">
       Friends
-      </button>
+      </Link>
 
-      <button class="bg-[#91af9b] hover:bg-[#446850] text-white font-bold py-8 px-4 rounded-full">
+      <Link
+        to="/manage"
+        className="bg-[#91af9b] hover:bg-[#446850] text-white font-bold py-8 px-4 rounded-full">
       Manage Groups
-      </button>
-
+      </Link>
       </div>
 
       
       <div className="flex flex-col gap-2 w-4/5"> {/*wrapper to stack pill buttons*/}
-      <button class="bg-gray-300 hover:bg-[#446850] text-white font-bold py-2 px-4 rounded-full">
+      
+      <Link
+        to="/edit"
+        className="bg-gray-300 hover:bg-[#446850] text-white font-bold py-2 px-4 rounded-full">
       Edit Profile
-      </button>
+      </Link>
 
-      <button class="bg-gray-300 hover:bg-[#446850] text-white font-bold py-2 px-4 rounded-full">
+      <button className="bg-gray-300 hover:bg-[#446850] text-white font-bold py-2 px-4 rounded-full">
       Sign Out
       </button>
 
       </div>
+
       </div>
   );
 }
