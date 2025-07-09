@@ -1,6 +1,6 @@
 // src/components/Navbar.jsx
 import { Link } from 'react-router-dom';
-import { House, Users, Search} from 'lucide-react';
+import { House, BookOpen, Search} from 'lucide-react';
 
 export default function Navbar() {
   return (
@@ -15,9 +15,9 @@ export default function Navbar() {
         className="hover:shadow-md ">
         <House size={30}/>
         </Link></li>
-        <li><Link to="/group" 
+        <li><Link to="/bookshelf" 
         className="hover:shadow-md">
-        <Users size={30}/>
+        <BookOpen size={30}/>
           </Link></li>
         
       </ul>
