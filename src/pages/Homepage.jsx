@@ -28,23 +28,23 @@ export default function Homepage() {
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center h-[calc(100vh-100px)] text-center overflow-hidden px-4">
+    <div className="relative flex flex-col items-center justify-center h-[calc(100vh-100px)] text-center px-4">
       <BookOpen size={80} strokeWidth={1} />
       <h2 className="text-lg font-semibold mt-4">Welcome to the Book Club!</h2>
       <p className="mt-2">Start a new group or join an existing one.</p>
 
       {/* Carousel Container */}
-      <div className="relative w-full flex items-center justify-center overflow-hidden">
+      <div className="relative w-full flex items-center justify-center">
         {/* Left Arrow */}
         <button
           onClick={handlePrev}
-          className="absolute left-4 p-2 rounded-full bg-white shadow hover:bg-gray-200"
+          className="absolute left-130 p-2 rounded-full bg-white shadow hover:bg-gray-200"
         >
           <ChevronLeft size={28} />
         </button>
 
         {/* Orbit Display with Animation */}
-        <div className="w-[100px] h-[100px] flex items-center justify-center">
+        <div className="w-[100px] flex items-center justify-center">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={currentIndex}
@@ -75,7 +75,7 @@ export default function Homepage() {
         {/* Right Arrow */}
         <button
           onClick={handleNext}
-          className="absolute right-4 p-2 rounded-full bg-white shadow hover:bg-gray-200"
+          className="absolute right-130 p-2 rounded-full bg-white shadow hover:bg-gray-200"
         >
           <ChevronRight size={28} />
         </button>

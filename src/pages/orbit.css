@@ -15,7 +15,6 @@
   
   .atom-container {
     position: absolute;
-    z-index: -1;
     transform: translate(-50%, -50%);
   }
   
@@ -46,7 +45,7 @@
     left: 50%;
     height: 380px;
     width: 380px;
-    margin-top: -170px;
+    margin-top: -250px;
     margin-left: -195px;
     position: absolute;
     top: 50%;
