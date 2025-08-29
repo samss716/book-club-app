@@ -1,9 +1,14 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Plus, CircleUserRound, BookOpen } from 'lucide-react';
 import "./orbit.css";
 
 export default function Homepage() {
+  const navigate = useNavigate();
   const groupMems = ["👤","👤"];
+
+  const handleOrbitClick = () => {
+    navigate('/manage'); // Navigate to group members page
+  };
 
     return (
       <div className="relative flex flex-col items-center justify-center h-[calc(100vh-100px)] text-center overflow-hidden px-4">

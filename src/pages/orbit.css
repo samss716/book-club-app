@@ -21,7 +21,12 @@
   }
   
   .atom-nucleus {
+  
+    width: 380px;
+    height: 380px;
+  }/*
     background-color: hidden;
+    border-style: dotted;
     border-radius: 50%;
     margin-top: -50px;
     margin-left: -50px;
@@ -30,9 +35,10 @@
     position: absolute;
     top: 50%;
     width: 100px;
-  }
-
+  
+*/
 .electron {
+    border-style: dotted;
     background-color: rgb(207, 206, 206);
     display: flex;
     align-items: center;
