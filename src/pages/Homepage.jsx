@@ -38,7 +38,7 @@ export default function Homepage() {
         {/* Left Arrow */}
         <button
           onClick={handlePrev}
-          className="absolute left-130 p-2 rounded-full bg-white shadow hover:bg-gray-200"
+          className="absolute left-130 p-2 rounded-full border bg-white shadow hover:bg-gray-200"
         >
           <ChevronLeft size={28} />
         </button>
@@ -75,7 +75,7 @@ export default function Homepage() {
         {/* Right Arrow */}
         <button
           onClick={handleNext}
-          className="absolute right-130 p-2 rounded-full bg-white shadow hover:bg-gray-200"
+          className="absolute right-130 p-2 rounded-full border bg-white shadow hover:bg-gray-200"
         >
           <ChevronRight size={28} />
         </button>
