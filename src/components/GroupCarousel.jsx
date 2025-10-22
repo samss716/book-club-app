@@ -8,7 +8,7 @@ export default function GroupCarousel() {
   const { groups, activeGroupIndex, switchGroup } = useGroups();
 
   return (
-    <div className="relative flex items-center justify-center w-full overflow-hidden h-[420px]">
+    <div className="relative flex items-center justify-center w-full h-[500px] sm:h-[600px] overflow-visible mt-[-50px]">
       {/* Arrows */}
       <button
         onClick={() => switchGroup(-1)}
@@ -23,30 +23,34 @@ export default function GroupCarousel() {
         <ChevronRight size={24} />
       </button>
 
-      {/* Group Orbit Transitions */}
-      <div className="relative flex items-center justify-center w-full">
+    {/* Group Orbit Transitions */}
+    <div className="relative flex items-center justify-center w-full">
         <AnimatePresence mode="popLayout">
-          {groups.map((group, index) => {
-            const offset = index - activeGroupIndex;
-            if (Math.abs(offset) > 1) return null; // only render adjacent groups
+        {groups.map((group, i) => {
+        // Compute the circular offset (wraps around)
+        let offset = (i - activeGroupIndex + groups.length) % groups.length;
+        if (offset > 1 && offset < groups.length - 1) return null; // keep only 3 visible
 
-            const isActive = offset === 0;
+        // Reinterpret offset for right-side rotation continuity
+        if (offset === groups.length - 1) offset = -1;
 
-            return (
-              <motion.div
-                key={group.id}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{
-                  opacity: isActive ? 1 : 0.5,
-                  scale: isActive ? 1 : 0.8,
-                  filter: isActive ? "blur(0px)" : "blur(3px)",
-                  zIndex: isActive ? 10 : 0,
-                  x: offset * 300, // horizontally spread
-                }}
+        const isActive = offset === 0;
+
+        return (
+            <motion.div
+            key={group.id}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{
+                opacity: isActive ? 1 : 0.5,
+                scale: isActive ? 1 : 0.8,
+                filter: isActive ? "blur(0px)" : "blur(3px)",
+                x: offset * 300, // horizontal position
+                zIndex: isActive ? 10 : 0
+            }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5 }}
                 className="absolute"
-              >
+            >
             <OrbitCircle members={group.members} />
             {isActive && (
   <         div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
