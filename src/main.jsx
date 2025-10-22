@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client'
 import './index.css';
 import App from './App.jsx';
 
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
 import CreateGroup from './pages/CreateGroup.jsx';
 import User from './pages/User.jsx';
 import Homepage from './pages/Homepage.jsx';
@@ -15,7 +17,10 @@ import EditProf from './pages/User-info/EditProf.jsx';
 import Friends from './pages/User-info/Friends.jsx';
 import ManageGroup from './pages/User-info/ManageGroup.jsx';
 
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+
+import { GroupProvider } from './context/GroupContext.jsx';
+
 
 const router = createBrowserRouter([
   {path: '/',element: <App />,
@@ -37,6 +42,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <GroupProvider>
     <RouterProvider router={router}/>
+    </GroupProvider>
   </StrictMode>
 );
