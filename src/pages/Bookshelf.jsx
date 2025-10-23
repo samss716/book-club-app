@@ -1,6 +1,8 @@
-
-
+import { useBooks } from "../context/BookContext.jsx";
 export default function Bookshelf() {
+
+  const { wishlist } = useBooks();
+
   return (
     <div className="p-4 h-full">
 

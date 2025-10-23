@@ -17,10 +17,8 @@ import EditProf from './pages/User-info/EditProf.jsx';
 import Friends from './pages/User-info/Friends.jsx';
 import ManageGroup from './pages/User-info/ManageGroup.jsx';
 
-
-
 import { GroupProvider } from './context/GroupContext.jsx';
-
+import { BookProvider } from './context/BookContext.jsx';
 
 const router = createBrowserRouter([
   {path: '/',element: <App />,
@@ -43,7 +41,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <GroupProvider>
-    <RouterProvider router={router}/>
+      <BookProvider>
+      <RouterProvider router={router}/>
+      </BookProvider>
     </GroupProvider>
   </StrictMode>
 );
