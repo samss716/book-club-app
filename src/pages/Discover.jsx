@@ -2,10 +2,15 @@
 import { useBooks } from "../context/BookContext.jsx";
 import { useState, useEffect } from "react";
 
+const API_KEY = import.meta.env.VITE_GOOGLE_BOOKS_API_KEY;
+
 export default function Discover() {
+  const { onAddToWishlist } = useBooks(); /*updating l8r */
+
   const [query, setQuery] = useState("");
   const [books, setBooks] = useState([]);
-  const [selectedGenre, setSelectedGenre] = useState("");
+  const [featuredBooks, setFeaturedBooks] = useState([]);
+  const [selectedGenre, setSelectedGenre] = useState("All");
   const [loading, setLoading] = useState(false);
 
   const genres = [
@@ -19,23 +24,62 @@ export default function Discover() {
     "Biography",
   ];
 
+  /* featured books on initial load */
+  const loadFeaturedBooks = async () => {
+  try {
+    const res = await fetch(
+      `https://www.googleapis.com/books/v1/volumes?q=subject:fiction&orderBy=newest&maxResults=10&printType=books&key=${API_KEY}`
+    );
+
+    const data = await res.json();
+
+    const results =
+      data.items?.map((item) => {
+        const imageLinks = item.volumeInfo.imageLinks || {};
+
+        return {
+          id: item.id,
+          title: item.volumeInfo.title || "Untitled",
+          authors: item.volumeInfo.authors || ["Unknown Author"],
+          thumbnail:
+            imageLinks.medium ||
+            imageLinks.small ||
+            imageLinks.thumbnail ||
+            imageLinks.smallThumbnail ||
+            "",
+          categories: item.volumeInfo.categories || [],
+        };
+      }) || [];
+
+    setFeaturedBooks(results);
+  } catch (err) {
+    console.error("Error fetching featured books:", err);
+  }
+};
+
+useEffect(() => {
+  loadFeaturedBooks();
+}, []);
+
   const handleSearch = async (e) => {
     e.preventDefault();
-    if (!query.trim()) return;
 
+    if (!query.trim()) { return; }
     setLoading(true);
     try {
       const res = await fetch(
-        `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=12`
+        `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=12&key=${API_KEY}`
       );
       const data = await res.json();
+
       const results = data.items?.map((item) => ({
         id: item.id,
-        title: item.volumeInfo.title,
-        authors: item.volumeInfo.authors,
-        thumbnail: item.volumeInfo.imageLinks?.thumbnail,
+        title: item.volumeInfo.title || "No Title",
+        authors: item.volumeInfo.authors || ["Unknown Author"],
+        thumbnail: item.volumeInfo.imageLinks?.thumbnail || "",
         categories: item.volumeInfo.categories || [],
       })) || [];
+      
       setBooks(results);
     } catch (err) {
       console.error("Error fetching books:", err);
@@ -92,6 +136,39 @@ export default function Discover() {
           </button>
         ))}
       </div>
+
+      {/* Featured Books */}
+      {!loading && books.length === 0 && (
+      <section className="mt-8">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-lg font-semibold text-[#446850]">
+          Featured New Releases
+        </h2>
+        </div>
+
+      <div className="flex gap-4 overflow-x-auto overflow-y-hidden pb-2 hide-scrollbar">
+      {featuredBooks.map((book) => (
+      <div
+        key={book.id}
+        className="min-w-[140px] max-w-[140px] flex-shrink-0"
+      >
+        <div className="w-32 h-44 rounded-md mb-2 flex items-center justify-center bg-[#f5f1e8] overflow-hidden shadow-sm">
+          <img
+            src={book.thumbnail}
+            alt={book.title}
+            className="w-full h-full object-contain"
+          />
+        </div>
+
+        <h3 className="text-sm font-semibold line-clamp-2">{book.title}</h3>
+        <p className="text-xs text-gray-500 line-clamp-2">
+          {book.authors?.join(", ")}
+        </p>
+      </div>
+    ))}
+  </div>
+</section>
+)}
 
       {/* Book Results */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
