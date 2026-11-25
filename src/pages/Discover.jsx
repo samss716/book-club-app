@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 const API_KEY = import.meta.env.VITE_GOOGLE_BOOKS_API_KEY;
 
 export default function Discover() {
-  const { onAddToWishlist } = useBooks(); /*updating l8r */
+  const { addToWishlist } = useBooks();
 
   const [query, setQuery] = useState("");
   const [books, setBooks] = useState([]);
@@ -196,7 +196,7 @@ useEffect(() => {
                 {book.authors?.join(", ")}
               </p>
               <button
-                onClick={() => onAddToWishlist(book)}
+                onClick={() => addToWishlist(book)}
                 className="mt-2 text-sm bg-[#91af9b] text-white px-3 py-1 rounded-md hover:bg-[#446850]"
               >
                 + Add

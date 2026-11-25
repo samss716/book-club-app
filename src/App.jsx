@@ -4,11 +4,11 @@ import Navbar from './components/Navbar';
 
 export default function App() {
   return (
-    <div className="relative min-h-screen pb-20 flex flex-col">
-      <main className="flex-grow mt-4">
+    <div className="relative min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-grow">
         <Outlet /> {/* Homepage render's here */}
       </main>
-      <Navbar />
     </div>
   );
 }

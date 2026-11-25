@@ -11,6 +11,7 @@ import Homepage from './pages/Homepage.jsx';
 import Bookshelf from './pages/Bookshelf.jsx';
 import Information from './pages/Information.jsx';
 import Discover from './pages/Discover.jsx';
+import GroupPage from './pages/GroupPage.jsx';
 
 /*import Bookshelf from './pages/User-info/Bookshelf-trial.jsx';*/
 import EditProf from './pages/User-info/EditProf.jsx';
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
   {path: 'info', element:<Information/>},
   {path: 'create', element:<CreateGroup/>},
   {path: 'user', element: <User /> },
+  {path: 'groups', element: <GroupPage />},
 
  /* { path: 'bookshelf', element: <Bookshelf /> },*/
   { path: 'friends', element: <Friends /> },

@@ -28,9 +28,20 @@ export function GroupProvider({ children }) {
     );
   };
 
+  const createGroup = (details) => {
+    const group = {
+      id: Date.now(),
+      ...details,
+      members: ["👤", ...details.invitees],
+    };
+    setGroups((prev) => [...prev, group]);
+    setActiveGroupIndex(groups.length);
+    return group;
+  };
+
   return (
     <GroupContext.Provider
-      value={{ groups, activeGroupIndex, switchGroup, addUserToGroup }}
+      value={{ groups, activeGroupIndex, switchGroup, addUserToGroup, createGroup }}
     >
       {children}
     </GroupContext.Provider>
