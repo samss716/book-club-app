@@ -1,210 +1,191 @@
-// src/pages/Discover.jsx
+import { useState } from "react";
 import { useBooks } from "../context/BookContext.jsx";
-import { useState, useEffect } from "react";
 
-const API_KEY = import.meta.env.VITE_GOOGLE_BOOKS_API_KEY;
+const mockBooks = [
+  {
+    id: "midnight-library",
+    title: "The Midnight Library",
+    authors: ["Matt Haig"],
+    categories: ["Fiction", "Fantasy"],
+    color: "#31556b",
+    accent: "#d9c18c",
+  },
+  {
+    id: "irregular-witches",
+    title: "The Very Secret Society of Irregular Witches",
+    authors: ["Sangu Mandanna"],
+    categories: ["Fiction", "Fantasy", "Romance"],
+    color: "#b65f50",
+    accent: "#f3d9a1",
+  },
+  {
+    id: "tomorrow-and-tomorrow",
+    title: "Tomorrow, and Tomorrow, and Tomorrow",
+    authors: ["Gabrielle Zevin"],
+    categories: ["Fiction", "Romance"],
+    color: "#596d53",
+    accent: "#e5cb91",
+  },
+  {
+    id: "project-hail-mary",
+    title: "Project Hail Mary",
+    authors: ["Andy Weir"],
+    categories: ["Fiction", "Science", "Science Fiction"],
+    color: "#455c78",
+    accent: "#d6c18a",
+  },
+  {
+    id: "thursday-murder-club",
+    title: "The Thursday Murder Club",
+    authors: ["Richard Osman"],
+    categories: ["Fiction", "Mystery"],
+    color: "#777b57",
+    accent: "#e7d6a5",
+  },
+  {
+    id: "song-of-achilles",
+    title: "The Song of Achilles",
+    authors: ["Madeline Miller"],
+    categories: ["Fiction", "Fantasy", "Romance"],
+    color: "#7a4c55",
+    accent: "#d9b795",
+  },
+  {
+    id: "warmth-of-other-suns",
+    title: "The Warmth of Other Suns",
+    authors: ["Isabel Wilkerson"],
+    categories: ["Non-Fiction", "History", "Biography"],
+    color: "#8a5942",
+    accent: "#e6c891",
+  },
+  {
+    id: "night-circus",
+    title: "The Night Circus",
+    authors: ["Erin Morgenstern"],
+    categories: ["Fiction", "Fantasy", "Romance"],
+    color: "#34384c",
+    accent: "#c5a36d",
+  },
+];
+
+const genres = [
+  "All",
+  "Fiction",
+  "Fantasy",
+  "Science",
+  "Romance",
+  "Mystery",
+  "History",
+  "Biography",
+];
 
 export default function Discover() {
   const { addToWishlist } = useBooks();
-
   const [query, setQuery] = useState("");
-  const [books, setBooks] = useState([]);
-  const [featuredBooks, setFeaturedBooks] = useState([]);
+  const [submittedQuery, setSubmittedQuery] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("All");
-  const [loading, setLoading] = useState(false);
+  const showResults = Boolean(submittedQuery) || selectedGenre !== "All";
 
-  const genres = [
-    "All",
-    "Fiction",
-    "Fantasy",
-    "Science",
-    "Romance",
-    "Mystery",
-    "History",
-    "Biography",
-  ];
-
-  /* featured books on initial load */
-  const loadFeaturedBooks = async () => {
-  try {
-    const res = await fetch(
-      `https://www.googleapis.com/books/v1/volumes?q=subject:fiction&orderBy=newest&maxResults=10&printType=books&key=${API_KEY}`
-    );
-
-    const data = await res.json();
-
-    const results =
-      data.items?.map((item) => {
-        const imageLinks = item.volumeInfo.imageLinks || {};
-
-        return {
-          id: item.id,
-          title: item.volumeInfo.title || "Untitled",
-          authors: item.volumeInfo.authors || ["Unknown Author"],
-          thumbnail:
-            imageLinks.medium ||
-            imageLinks.small ||
-            imageLinks.thumbnail ||
-            imageLinks.smallThumbnail ||
-            "",
-          categories: item.volumeInfo.categories || [],
-        };
-      }) || [];
-
-    setFeaturedBooks(results);
-  } catch (err) {
-    console.error("Error fetching featured books:", err);
-  }
-};
-
-useEffect(() => {
-  loadFeaturedBooks();
-}, []);
-
-  const handleSearch = async (e) => {
-    e.preventDefault();
-
-    if (!query.trim()) { return; }
-    setLoading(true);
-    try {
-      const res = await fetch(
-        `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=12&key=${API_KEY}`
+  const matchingBooks = mockBooks.filter((book) => {
+    const matchesGenre =
+      selectedGenre === "All" ||
+      book.categories.some((category) =>
+        category.toLowerCase().includes(selectedGenre.toLowerCase())
       );
-      const data = await res.json();
+    const searchText = [book.title, ...book.authors, ...book.categories]
+      .join(" ")
+      .toLowerCase();
+    return matchesGenre && searchText.includes(submittedQuery.toLowerCase());
+  });
+  const visibleBooks = showResults ? matchingBooks : matchingBooks.slice(0, 5);
 
-      const results = data.items?.map((item) => ({
-        id: item.id,
-        title: item.volumeInfo.title || "No Title",
-        authors: item.volumeInfo.authors || ["Unknown Author"],
-        thumbnail: item.volumeInfo.imageLinks?.thumbnail || "",
-        categories: item.volumeInfo.categories || [],
-      })) || [];
-      
-      setBooks(results);
-    } catch (err) {
-      console.error("Error fetching books:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Filter by genre
-  const filteredBooks =
-    selectedGenre && selectedGenre !== "All"
-      ? books.filter((b) =>
-          b.categories?.some((cat) =>
-            cat.toLowerCase().includes(selectedGenre.toLowerCase())
-          )
-        )
-      : books;
+  function handleSearch(event) {
+    event.preventDefault();
+    setSubmittedQuery(query.trim());
+  }
 
   return (
     <div className="p-4">
-      {/* Search Bar */}
       <form
         onSubmit={handleSearch}
-        className="flex items-center border rounded-md p-2 w-full max-w-xl mx-auto"
+        className="mx-auto flex w-full max-w-xl items-center rounded-md border p-2"
       >
+        <label className="sr-only" htmlFor="book-search">Search books</label>
         <input
-          type="text"
-          className="flex-1 border-none focus:outline-none text-gray-700"
+          id="book-search"
+          type="search"
+          className="flex-1 border-none text-gray-700 focus:outline-none"
           placeholder="Search for a book..."
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(event) => setQuery(event.target.value)}
         />
         <button
           type="submit"
-          className="px-4 text-[#446850] font-semibold hover:text-[#91af9b]"
+          className="px-4 font-semibold text-[#446850] hover:text-[#91af9b]"
         >
-          🔍
+          Search
         </button>
       </form>
 
-      {/* Genre Filter Pills */}
-      <div className="flex flex-wrap justify-center mt-4 gap-2">
-        {genres.map((g) => (
+      <div className="mt-4 flex flex-wrap justify-center gap-2">
+        {genres.map((genre) => (
           <button
-            key={g}
-            onClick={() => setSelectedGenre(g)}
-            className={`px-4 py-2 rounded-full border transition ${
-              selectedGenre === g
-                ? "bg-[#91af9b] text-white border-[#446850]"
+            key={genre}
+            type="button"
+            aria-pressed={selectedGenre === genre}
+            onClick={() => setSelectedGenre(genre)}
+            className={`rounded-full border px-4 py-2 transition ${
+              selectedGenre === genre
+                ? "border-[#446850] bg-[#91af9b] text-white"
                 : "border-gray-300 text-gray-700 hover:bg-gray-100"
             }`}
           >
-            {g}
+            {genre}
           </button>
         ))}
       </div>
 
-      {/* Featured Books */}
-      {!loading && books.length === 0 && (
       <section className="mt-8">
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-lg font-semibold text-[#446850]">
-          Featured New Releases
+        <h2 className="mb-3 text-lg font-semibold text-[#446850]">
+          {showResults ? "Book Results" : "Featured New Releases"}
         </h2>
-        </div>
-
-      <div className="flex gap-4 overflow-x-auto overflow-y-hidden pb-2 hide-scrollbar">
-      {featuredBooks.map((book) => (
-      <div
-        key={book.id}
-        className="min-w-[140px] max-w-[140px] flex-shrink-0"
-      >
-        <div className="w-32 h-44 rounded-md mb-2 flex items-center justify-center bg-[#f5f1e8] overflow-hidden shadow-sm">
-          <img
-            src={book.thumbnail}
-            alt={book.title}
-            className="w-full h-full object-contain"
-          />
-        </div>
-
-        <h3 className="text-sm font-semibold line-clamp-2">{book.title}</h3>
-        <p className="text-xs text-gray-500 line-clamp-2">
-          {book.authors?.join(", ")}
-        </p>
-      </div>
-    ))}
-  </div>
-</section>
-)}
-
-      {/* Book Results */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
-        {loading ? (
-          <p className="text-center text-gray-600 col-span-full">
-            Loading results...
-          </p>
-        ) : filteredBooks.length === 0 ? (
-          <p className="text-center text-gray-500 col-span-full">
-            No books found.
-          </p>
+        {visibleBooks.length === 0 ? (
+          <p className="py-8 text-center text-gray-500">No books found in the mock catalog.</p>
         ) : (
-          filteredBooks.map((book) => (
-            <div
-              key={book.id}
-              className="bg-white shadow-sm rounded-md p-3 flex flex-col items-center"
-            >
-              <img
-                src={book.thumbnail}
-                alt={book.title}
-                className="w-32 h-44 object-cover rounded-md mb-2"
-              />
-              <h3 className="text-sm font-semibold text-center">{book.title}</h3>
-              <p className="text-xs text-gray-500 text-center">
-                {book.authors?.join(", ")}
-              </p>
-              <button
-                onClick={() => addToWishlist(book)}
-                className="mt-2 text-sm bg-[#91af9b] text-white px-3 py-1 rounded-md hover:bg-[#446850]"
+          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4">
+            {visibleBooks.map((book) => (
+              <article
+                key={book.id}
+                className="flex flex-col items-center rounded-md bg-white p-3 shadow-sm"
               >
-                + Add
-              </button>
-            </div>
-          ))
+                <div
+                  aria-label={`Mock cover for ${book.title}`}
+                  role="img"
+                  className="mb-2 flex h-44 w-32 flex-col justify-between rounded-r-md p-3 text-left text-white shadow-sm"
+                  style={{
+                    backgroundColor: book.color,
+                    borderLeft: `5px solid ${book.accent}`,
+                  }}
+                >
+                  <span className="font-serif text-xs leading-tight">{book.title}</span>
+                  <span className="text-[9px] uppercase tracking-wide">{book.authors[0]}</span>
+                </div>
+                <h3 className="text-center text-sm font-semibold">{book.title}</h3>
+                <p className="text-center text-xs text-gray-500">
+                  {book.authors.join(", ")}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => addToWishlist(book)}
+                  className="mt-2 rounded-md bg-[#91af9b] px-3 py-1 text-sm text-white hover:bg-[#446850]"
+                >
+                  + Add
+                </button>
+              </article>
+            ))}
+          </div>
         )}
-      </div>
+      </section>
     </div>
   );
 }
